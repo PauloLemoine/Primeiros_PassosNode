@@ -1,5 +1,4 @@
 # Criando Back-end com TypeScript, TypeORM, MySQL para o PI 
-<hr>
 
 Ao clonar o repositório deve-se fazer a integração com o banco de dados seguindo os seguintes passos:
 1º Criar uma pasta dentro de "src" chamada "config" e criar dentro dela o arquivo "db.config.ts";
