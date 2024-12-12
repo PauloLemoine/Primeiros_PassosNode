@@ -1,4 +1,4 @@
-#Criando Back-end com TypeScript, TypeORM, MySQL para o PI 
+# Criando Back-end com TypeScript, TypeORM, MySQL para o PI 
 <hr>
 
 Ao clonar o repositório deve-se fazer a integração com o banco de dados seguindo os seguintes passos:
