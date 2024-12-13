@@ -9,7 +9,7 @@ export class Agendamento {
   id_agendamento: number;
 
   @Column({ type: 'date' })
-  data: string;
+  datas: string;
 
   @Column({ type: 'time' })
   horario: string;
@@ -30,7 +30,7 @@ export class Agendamento {
 
   constructor(id: number, data: string, horario: string, valorTotal: number, cliente: Cliente, funcionario: Funcionario){
     this.id_agendamento = id;
-    this.data = data;
+    this.datas = data;
     this.horario = horario;
     this.valorTotal = valorTotal;
     this.cliente = cliente;

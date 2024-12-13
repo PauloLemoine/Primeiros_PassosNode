@@ -9,8 +9,6 @@ export class Cliente {
   @Column({ type: "varchar", length: 45, nullable: false })
   nome: string;
 
-  @Column({ type: "varchar", length: 45, nullable: false })
-  senha: string;
 
   @OneToMany(() => Agendamento, (agendamento) => agendamento.cliente, { cascade: true })
   agendamentos?: Agendamento[];
@@ -18,6 +16,5 @@ export class Cliente {
   constructor(cpf: string, nome: string, senha: string) {
     this.cpf = cpf;
     this.nome = nome;
-    this.senha = senha;
   }
 }

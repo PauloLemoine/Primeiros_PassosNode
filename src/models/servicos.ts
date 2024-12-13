@@ -6,7 +6,7 @@ export class Servicos {
     @PrimaryGeneratedColumn({type: "int"})
     idservicos: number;
 
-    @Column ({type: "varchar", length: 45, nullable: false})
+    @Column ({type: "varchar", length: 45, nullable: false, unique: true})
     nome: string;
 
     @Column("decimal", {precision: 5, scale: 2, nullable: false})
