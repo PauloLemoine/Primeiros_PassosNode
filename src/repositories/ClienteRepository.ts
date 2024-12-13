@@ -42,7 +42,7 @@ class ClienteRepository {
     }
 
     async update(cliente: Cliente) {
-        const { cpf, nome, senha } = cliente;
+        const { cpf, nome } = cliente;
         try {
             this.clienteRepository.save(cliente);
         } catch (error) {

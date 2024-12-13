@@ -1,5 +1,6 @@
 import { AppDataSource } from "../db/data_source";
 import { Funcionario } from "../models/funcionario";
+import { getManager } from 'typeorm';
 
 class FuncionarioRepository {
     funcionarioRepository = AppDataSource.getRepository(Funcionario);
@@ -31,10 +32,10 @@ class FuncionarioRepository {
         }
     }
 
-    async retrieveByName(name: string): Promise<Array<Funcionario>> {
+
+    // erro em buscar pelo nome
+    async retrieveByName(name: string): Promise<Array<Funcionario>| null> {
         try {
-            //aqui ão vai ser usado o "findOneBy", pelo fato de poder haver mais de uma pessoa com o mesmo nome
-            //então vai ser retornado uma "<Array<Funcionario>>"
             return await this.funcionarioRepository.find({
                 where: {
                     nome: name
@@ -44,6 +45,7 @@ class FuncionarioRepository {
             throw new Error('Falha ao recuperar o funcionário pelo nome');
         }
     }
+
 
     // atualizar um registro
     async update(funcionario: Funcionario): Promise<Funcionario> {
@@ -82,4 +84,4 @@ class FuncionarioRepository {
     }
 }
 
-export default new FuncionarioRepository;
+export default new FuncionarioRepository();
