@@ -12,6 +12,21 @@ class AgendamentoRepository {
             throw new Error('Erro ao realizar o agendamento');
         }
     }
+
+    // criar agendamento com procedure
+    async callCreateAgendamento(datas: string, horario: string, valorTotal: number, cliente_cpf: string, funcionario_cpf: string): Promise<void> {
+        try {
+            await this.agendamentoRepository.query(
+                `CALL criar_agendamento(?, ?, ?, ?, ?);`,
+                [datas, horario, valorTotal, cliente_cpf, funcionario_cpf]
+            );
+        } catch (error) {
+            throw new Error('Erro ao chamar a procedure para criar agendamento');
+        }
+    }
+
+    
+
      // ler muitos e um registro(todos, id)
     async retriveAll(): Promise<Array<Agendamento>> {
         try {
@@ -31,9 +46,22 @@ class AgendamentoRepository {
             throw new Error('Erro ao buscar o agendamento');
         }
     }
+
+    // chamar procedure para buscar agendamento por ID
+    async callRetrieveById(id_agendamento: number): Promise<Agendamento[]> {
+        try {
+            return await this.agendamentoRepository.query(
+                `CALL buscar_agendamento_por_id(?);`,
+                [id_agendamento]
+            );
+        } catch (error) {
+            throw new Error('Erro ao chamar a procedure para buscar agendamento por ID');
+        }
+    }
+
      // atualizar um registro
      async update(agendamento: Agendamento) {
-        const { data, horario } = agendamento;
+        const { datas, horario } = agendamento;
         try {
             this.agendamentoRepository.save(agendamento);
         } catch (error) {
@@ -64,7 +92,7 @@ class AgendamentoRepository {
         } catch (error) {
             throw new Error ('Falha ao deletar todos os agendamentos');
         }
-    }
+    }    
 }
 
 export default new AgendamentoRepository();

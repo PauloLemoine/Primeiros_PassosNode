@@ -11,13 +11,20 @@ class CargoRoutes {
 
     initializeRoutes() {
         // Criar cargo
-        this.router.post("/cargo", this.controller.create);
+        this.router.post("/cargo", this.controller.create); // erro "cbo obrigatório"
 
         //Listar todos os cargos
         this.router.get("/cargos", this.controller.getAll);
 
-        // Listar o pos cargo pesquisado
+        // Listar o por cargo pesquisado
         this.router.get("/cargo/:cbo", this.controller.getByCbo);
+
+        // Atualizar o nome do cargo com procedure
+        this.router.put("/cargo/:cbo/:nome", this.controller.updateNameCargo);
+
+        // Deletar os cargo pelo cbo
+        this.router.delete("/delcargo/:cbo", this.controller.deleteCbo);
+        // Deletar todos os cargos
     }
 }
 

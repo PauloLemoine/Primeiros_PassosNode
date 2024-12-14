@@ -33,15 +33,17 @@ class Agendamento_ServicosRepository {
             throw new Error('Erro ao buscar o agendamento');
         }
     }
+
      // atualizar um registro
      async update(agendamento: AgendamentoServicos) {
-        const { quantidade } = agendamento;
+        const { servicos_idservicos } = agendamento;
         try {
-            this.agendamento_servicosrepository.save(agendamento);
+            this.agendamento_servicosrepository.save(agendamento); // criar uma trigger que atualize o valor da venda ao mudar o serviço
         } catch (error) {
             throw new Error('Erro ao atualizar o agendamento');
         }
      }
+
      // deletar um registro e todos
      async delete(id_agendamento: number, idserv: number, cpf_func: string): Promise<number> {
         try {
@@ -70,3 +72,5 @@ class Agendamento_ServicosRepository {
         }
     }
 }
+
+export default new Agendamento_ServicosRepository();

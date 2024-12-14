@@ -69,4 +69,58 @@ export default class CargoController{
             });
         }
     }
+
+    async updateNameCargo(req: Request, res: Response){
+        const cargo: Cargo = req.body;
+        cargo.cbo =  req.params.cbo;
+        cargo.nome = req.params.nome
+        try {
+            const cargoExistente = await CargoRepository.retrieveByName(cargo.nome);
+
+            if (!cargoExistente)
+            await CargoRepository.update(cargo);
+            else
+            res.send({
+                message: `Cargo  com o nome ${cargo.nome} já existe!`
+            });
+            res.send({
+                message: `Cargo ${cargo.nome} atualizado com sucesso!`
+            });
+        } catch (err){
+            res.status(500).send({
+                message: 'Erro ao atualizar o cargo'
+            });
+        }
+    }
+
+    async deleteCbo(req: Request, res: Response){
+        const cbo = req.params.cbo;
+        try {
+            const num = await CargoRepository.delete(cbo)
+            
+            if (num == 1) {
+                res.send({
+                    message: "Cargo deletado com sucesso!"
+                });
+            } else {
+                res.send ({
+                    message: `Não foi possível deletar o cargo com o cbo: ${cbo}`
+                });
+            }
+        } catch (error) {
+            res.status(500).send({
+                message: `O cargo com cbo: ${cbo}, não pode ser deletado.`
+            });
+        }
+    }
+
+    async deleteTodos(req: Request, res: Response){
+        try {
+            const num = await CargoRepository.deleteAll();
+        } catch (error) {
+            res.status(500).send({
+                message: "Não pode deletar todos os cargos!"
+            });
+        }
+    }
 }
