@@ -73,22 +73,59 @@ export default class CargoController{
     async updateNameCargo(req: Request, res: Response){
         const cargo: Cargo = req.body;
         cargo.cbo =  req.params.cbo;
-        cargo.nome = req.params.nome
+        cargo.nome = req.body.nome
         try {
-            const cargoExistente = await CargoRepository.retrieveByName(cargo.nome);
+            const novoNome = cargo.nome;
+            const nomeCargoExistente = await CargoRepository.retrieveByName(cargo.nome); // nome existe
+            const cargoExistente = await CargoRepository.retrieveById(cargo.cbo); // cbo existe
 
-            if (!cargoExistente)
-            await CargoRepository.update(cargo);
-            else
-            res.send({
-                message: `Cargo  com o nome ${cargo.nome} já existe!`
-            });
-            res.send({
-                message: `Cargo ${cargo.nome} atualizado com sucesso!`
-            });
+            if (nomeCargoExistente?.nome == novoNome){
+                res.send({
+                    message: `Cargo com o nome ${nomeCargoExistente.nome} já existe!`
+                });
+                return;
+            }
+
+            if(cargoExistente){ 
+                await CargoRepository.updateNameProcedure(cargo);
+                res.send({
+                    message: `Cargo ${cargoExistente.nome} com o cbo '${cargoExistente.cbo}' foi atualizado para ${novoNome} com sucesso!`
+                });
+            } else {
+                res.send({
+                    message: `O cargo com o cbo '${cargo.cbo}' não existe!`
+                });
+                return;
+            }
+
         } catch (err){
             res.status(500).send({
-                message: 'Erro ao atualizar o cargo'
+                message: `Erro ao atualizar o cargo com o cbo ${cargo.cbo}`
+            });
+        }
+    }
+
+
+    async updateSalCargo(req: Request, res: Response){
+        const cargo: Cargo = req.body
+        cargo.cbo =  req.params.cbo;
+        cargo.salario = req.body.salario;
+        try {
+            const cargoExistente = await CargoRepository.retrieveById(cargo.cbo);
+
+            if(cargoExistente){
+                await CargoRepository.updateSalProcedure(cargo);
+                res.send({
+                    message: `Salário do Cargo de ${cargoExistente.nome} atualizado para R$${cargo.salario}`
+                });
+            } else {
+                res.send ({
+                    message: `Cargo não encontrado com o cbo '${cargo.cbo}'`
+                })
+            }
+        } catch (error) {
+            res.status(500).send({
+                message: `Erro ao atualizar o salário do cargo com o cbo ${cargo.cbo}`
             });
         }
     }
@@ -96,16 +133,25 @@ export default class CargoController{
     async deleteCbo(req: Request, res: Response){
         const cbo = req.params.cbo;
         try {
-            const num = await CargoRepository.delete(cbo)
-            
-            if (num == 1) {
+            const cargoExistente = await CargoRepository.retrieveById(cbo);
+            const cargoInexistente = cbo;
+            if(!cargoExistente){
                 res.send({
-                    message: "Cargo deletado com sucesso!"
+                    message: `Cargo com o cbo '${cargoInexistente}' não foi encontrado!`
                 });
-            } else {
-                res.send ({
-                    message: `Não foi possível deletar o cargo com o cbo: ${cbo}`
-                });
+                return;  // caso o cargo não exista, não precisa continuar a execução do método.
+            } 
+            if(cargoExistente) {
+                const num = await CargoRepository.delete(cbo)
+                if (num == 1) {
+                    res.send({
+                        message: `O Cargo ${cargoExistente.nome} com o cbo '${cargoExistente.cbo}' foi deletado com sucesso!`
+                    });
+                } else {
+                    res.send ({
+                        message: `Não foi possível deletar o cargo ${cargoExistente.nome} com o cbo: ${cbo}`
+                    });
+                }
             }
         } catch (error) {
             res.status(500).send({
@@ -117,9 +163,20 @@ export default class CargoController{
     async deleteTodos(req: Request, res: Response){
         try {
             const num = await CargoRepository.deleteAll();
+            
+            if (num == 0) {
+                res.send({
+                    message: "Nenhum cargo encontrado para deletar."
+                });
+                return; // caso não existam cargos, não precisa continuar a execução do método.
+            } else {
+                res.send({
+                    message: `Todos os ${num} cargos foram deletados com sucesso!`
+                });
+            }
         } catch (error) {
             res.status(500).send({
-                message: "Não pode deletar todos os cargos!"
+                message: "Erro ao deletar todos os cargos!"
             });
         }
     }

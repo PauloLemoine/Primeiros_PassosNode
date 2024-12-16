@@ -61,6 +61,16 @@ class CargoRepository {
         }
     }
 
+    async updateSalProcedure(cargo: Cargo){
+        const { cbo, salario } = cargo
+        try {
+            this.cargoRepository.query("CALL atualizar_salario_cargo(?,?)", 
+        [cargo.cbo, cargo.salario]);
+        } catch (error) {
+            throw new Error("Falha ao atualizar o cargo usando procedure!"); 
+        }
+    }
+
     async delete(cbofunc: string): Promise<number> {
         try {
             const cargoEncontrado = await this.cargoRepository.findOneBy({
@@ -78,8 +88,10 @@ class CargoRepository {
 
     async deleteAll(): Promise<number> {
         try {
+            const result = await this.cargoRepository.query("select count(cbo) as total from cargo");
+            const num: number = result[0]?.total || 0;
             this.cargoRepository.query("delete from cargo;");
-            return 1;
+            return num;
         } catch (error) {
             throw new Error("Falha ao deletar todos os cargos!");
         }
