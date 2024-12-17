@@ -1,4 +1,4 @@
-# Criando uma API com TypeScript, TypeORM, MySQL para o PI 
+# Criando uma API com NodeJS, TypeScript, TypeORM, MySQL, ExpressJS para o Projeto Integrador da Faculdade (PI) 
 
 Ao clonar o repositório deve-se fazer a integração com o banco de dados seguindo os seguintes passos:
 <br>1º Criar uma pasta dentro de "src" chamada "config" e criar dentro dela o arquivo "db.config.ts";

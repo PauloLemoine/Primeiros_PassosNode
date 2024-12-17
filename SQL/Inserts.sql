@@ -64,7 +64,6 @@ INSERT INTO agendamento (datas, horario, valorTotal, cliente_cpf, funcionario_cp
 ('2024-04-10', '14:30:00', 70.00, '11122233349', '12345678910'),
 ('2024-04-11', '15:30:00', 90.00, '11122233350', '12345678901'),
 ('2024-04-12', '09:00:00', 110.00, '11122233350', '12345678903');
-
 -- Inserindo dados na tabela agendamento_servicos
 INSERT INTO agendamento_servicos (agendamento_id_agendamento, servicos_idservicos, funcionario_cpf_funcionario, valorVenda) VALUES
 (1, 1, '12345678901', 50.00),
@@ -87,3 +86,4 @@ INSERT INTO agendamento_servicos (agendamento_id_agendamento, servicos_idservico
 (11, 5, '12345678901', 40.00),
 (12, 3, '12345678903', 60.00),
 (12, 6, '12345678903', 50.00);
+
